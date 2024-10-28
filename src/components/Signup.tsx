@@ -57,20 +57,20 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex items-center flex-col justify-center min-h-[95vh] p-4">
+    <div className=" flex items-center flex-col justify-center min-h-[90vh] p-4">
       <Card className="w-[400px] bg-white shadow-xl overflow-hidden flex flex-col">
         <CardHeader className="">
           <CardTitle className="text-3xl font-bold  text-gray-800">
             Sign up
           </CardTitle>
           <CardDescription className=" text-gray-600">
-            Enter your credentials to access your account
+            Enter your details to create a new account
           </CardDescription>
         </CardHeader>
 
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-5 py-3 flex-grow">
-            <div className="space-y-1">
+            <div className="space-y-0">
               <Label
                 htmlFor="name"
                 className="text-sm font-medium text-gray-700"
@@ -94,7 +94,7 @@ export default function Signup() {
               </motion.div>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-0">
               <Label
                 htmlFor="email"
                 className="text-sm font-medium text-gray-700"
@@ -118,7 +118,7 @@ export default function Signup() {
               </motion.div>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-0">
               <Label
                 htmlFor="password"
                 className="text-sm font-medium text-gray-700"
@@ -151,7 +151,7 @@ export default function Signup() {
               className="w-full"
             >
               <Button
-              onClick={handleSubmit}
+                onClick={handleSubmit}
                 type="submit"
                 className="w-full  text-white font-normal py-2 px-4 rounded-md  duration-100"
               >
@@ -168,7 +168,7 @@ export default function Signup() {
               <Button
                 type="submit"
                 variant={"outline"}
-                className="mt-3 w-full font-normal py-2 px-4 rounded-md  duration-100"
+                className="hover:bg-gray-100 mt-3 w-full font-normal py-2 px-4 rounded-md  duration-100"
               >
                 Sign up with Google
               </Button>
@@ -179,7 +179,7 @@ export default function Signup() {
               <span>
                 {" "}
                 <Link to={`/signin`} className="text-blue-800">
-                  Sign in
+                  Login
                 </Link>
               </span>
             </p>

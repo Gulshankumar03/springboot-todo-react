@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
@@ -12,18 +11,25 @@ export default function Navbar() {
             </Link>
             <Link
               to={`/`}
-              className=" text-[28px] font-extrabold font-nunito text-orange-500"
+              className=" text-[28px] font-extrabold font-nunito text-indigo-600"
             >
               List
             </Link>
           </div>
-          <div className="flex">
-            <Button
-              variant="ghost"
-              className="text-base bg-slate-400/10 hover:bg-slate-200/70"
-            >
+
+          <div className="flex gap-1">
+            <Link className="hover:bg-gray-100 px-2 py-1 rounded-md" to={"/welcome"}>
+              Home
+            </Link>
+            <Link className="hover:bg-gray-100 px-2 py-1 rounded-md" to={"/signup"}>
               Sign Up
-            </Button>
+            </Link>
+            <Link className="hover:bg-gray-100 px-2 py-1 rounded-md" to={"/signin"}>
+              Login
+            </Link>
+            <Link className="hover:bg-gray-100 px-2 py-1 rounded-md" to={"/signin"}>
+              Logout
+            </Link>
           </div>
         </div>
       </div>
