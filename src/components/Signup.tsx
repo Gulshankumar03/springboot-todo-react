@@ -33,7 +33,8 @@ const buttonVariants = {
 };
 
 export default function Signup() {
-  const [email, setName] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -83,10 +84,12 @@ export default function Signup() {
                 whileHover="hover"
               >
                 <Input
+                  autoFocus
+                  autoComplete="true"
                   id="name"
                   type="text"
                   placeholder="Enter your name"
-                  value={email}
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
@@ -107,11 +110,12 @@ export default function Signup() {
                 whileHover="hover"
               >
                 <Input
+                  autoComplete="true"
                   id="email"
                   type="email"
                   placeholder="Enter your email"
                   value={email}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                 />

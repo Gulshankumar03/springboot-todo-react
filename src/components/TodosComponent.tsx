@@ -19,10 +19,10 @@ const TodosComponent = () => {
   return (
     <>
       <div className="flex items-center flex-col min-h-[90vh] ">
-        <h1 className="text-4xl font-bold m-8">Your Todos</h1>
+        <h1 className="text-3xl font-bold p-12">Your Todos</h1>
         <div className="w-full max-w-7xl overflow-x-auto rounded-md">
           <table className="w-full bg-white shadow-md">
-            <thead className=" bg-gray-200 border-b border-gray-300">
+            <thead className=" bg-gray-200/70 border-b border-gray-300">
               <tr>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                   Id

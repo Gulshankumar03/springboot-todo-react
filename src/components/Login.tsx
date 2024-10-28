@@ -12,6 +12,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./security/AuthContext";
 
 const inputVariants = {
   focus: {
@@ -35,40 +36,22 @@ const buttonVariants = {
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [message, setMessage] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
+  const authContext = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === "gulshangk1134@gmail.com" && password === "gillu123") {
-      setIsAuthenticated(true);
-      setIsError(false);
+    if (authContext?.login(email, password)) {
       navigate("/welcome");
     } else {
-      setIsAuthenticated(false);
       setIsError(true);
-      navigate("/error");
     }
-    // setEmail("");
-    // setPassword("");
   };
 
   return (
     <div className="flex items-center flex-col justify-center min-h-[90vh] p-4">
-      {isAuthenticated && (
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="bg-green-400/20 px-10 py-3 rounded-xl m-3 text-sm text-center text-green-500">
-            Success
-          </div>
-        </motion.p>
-      )}
       {isError && (
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -76,7 +59,7 @@ export default function Login() {
           transition={{ duration: 0.3 }}
         >
           <div className="bg-red-400/20 px-10 py-3 rounded-xl m-3 text-sm text-center text-red-500">
-            Login failed!
+            Login failed! Try again.
           </div>
         </motion.p>
       )}
@@ -104,6 +87,7 @@ export default function Login() {
                 whileHover="hover"
               >
                 <Input
+                  autoFocus
                   id="email"
                   type="email"
                   placeholder="Enter your email"
