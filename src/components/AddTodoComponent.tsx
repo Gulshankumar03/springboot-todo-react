@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
-import TodoApiService from "@/api/TodoApiService";
+import useTodoApiService from "@/api/TodoApiService";
 
 interface Todo {
   todo: string;
-  completed: boolean;
+  isCompleted: boolean; // Ensure this matches the structure defined in the backend
 }
 
 interface AddTodoComponentProps {
@@ -19,6 +19,7 @@ const AddTodoComponent: React.FC<AddTodoComponentProps> = ({
   const [todoText, setTodoText] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
+  const { addTodo } = useTodoApiService(); // Call the hook and destructure the addTodo function
 
   const handleAddTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,18 +33,18 @@ const AddTodoComponent: React.FC<AddTodoComponentProps> = ({
       return;
     }
 
-    //In case of multiple submissions
+    // In case of multiple submissions
     if (isLoading) return;
 
     setIsLoading(true);
 
     const todoData: Todo = {
       todo: trimmedTodoText,
-      completed: false,
+      isCompleted: false, // Make sure this property is included
     };
 
     try {
-      await TodoApiService.addTodo(todoData);
+      await addTodo(todoData); // Use the addTodo function from the hook
       toast({
         description: "Todo added successfully!",
       });

@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import TodoApiService from "@/api/TodoApiService";
 import AddTodoComponent from "./AddTodoComponent";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, Pencil, Save, Trash2, X } from "lucide-react";
-
+import useTodoApiService from "@/api/TodoApiService";
 interface Todo {
   id: number;
   todo: string;
-  createdAt: Date;
-  completed: boolean;
+  createdAt: string;
+  isCompleted: boolean;
 }
 
 interface TodosByDate {
-  date: string; // formatted date (YYYY-MM-DD)
+  date: string;
   todos: Todo[];
 }
 
@@ -26,15 +25,19 @@ export default function TodosComponent() {
   }>({});
   const [editingId, setEditingId] = useState<number | null>(null);
   const [updatedTodoText, setUpdatedTodoText] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const todoApiService = useTodoApiService();
 
   useEffect(() => {
     refreshTodos();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   const refreshTodos = async () => {
     try {
-      const response = await TodoApiService.getTodos();
-      setTodos(response.data);
+      const response = await todoApiService.getTodos();
+      setTodos(response);
       setLoadingStates({});
       setEditingId(null);
     } catch (error) {
@@ -50,9 +53,9 @@ export default function TodosComponent() {
   const handleDeleteTodo = async (id: number) => {
     setLoadingStates((prev) => ({ ...prev, [id]: true }));
     try {
-      await TodoApiService.deleteTodo(id);
+      await todoApiService.deleteTodo(id);
       toast({ title: "Todo deleted successfully" });
-      refreshTodos();
+      refreshTodos(); // Refresh todos after deletion
     } catch (error) {
       console.error("Error deleting todo:", error);
       toast({
@@ -60,19 +63,25 @@ export default function TodosComponent() {
         title: "Failed to delete todo",
         description: "There was a problem with your request.",
       });
-      setLoadingStates((prev) => ({ ...prev, [id]: false }));
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [id]: false })); // Reset loading state
     }
   };
 
   const handleUpdateClick = (todo: Todo) => {
     setEditingId(todo.id);
     setUpdatedTodoText(todo.todo);
+    // Focus and select the text in the input field
+    setTimeout(() => {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+    }, 0);
   };
 
   const handleUpdateSubmit = async (id: number) => {
     setLoadingStates((prev) => ({ ...prev, [id]: true }));
     try {
-      await TodoApiService.updateTodo(id, { todo: updatedTodoText });
+      await todoApiService.updateTodo(id, { todo: updatedTodoText });
       toast({ title: "Todo updated successfully" });
       refreshTodos();
     } catch (error) {
@@ -82,7 +91,8 @@ export default function TodosComponent() {
         title: "Failed to update todo",
         description: "There was a problem with your request.",
       });
-      setLoadingStates((prev) => ({ ...prev, [id]: false }));
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [id]: false })); // Reset loading state
     }
   };
 
@@ -94,7 +104,9 @@ export default function TodosComponent() {
   const handleToggleComplete = async (todo: Todo) => {
     setLoadingStates((prev) => ({ ...prev, [todo.id]: true }));
     try {
-      await TodoApiService.updateTodo(todo.id, { completed: !todo.completed });
+      await todoApiService.updateTodo(todo.id, {
+        isCompleted: !todo.isCompleted,
+      });
       refreshTodos();
     } catch (error) {
       console.error("Error updating todo completion:", error);
@@ -103,7 +115,8 @@ export default function TodosComponent() {
         title: "Failed to update todo",
         description: "There was a problem with your request.",
       });
-      setLoadingStates((prev) => ({ ...prev, [todo.id]: false }));
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [todo.id]: false })); // Reset loading state
     }
   };
 
@@ -140,26 +153,30 @@ export default function TodosComponent() {
                 key={todo.id}
                 className="flex items-center justify-between p-5 border-b border-gray-200"
               >
-                <div className="flex items-center space-x-4 flex-grow">
+                <div className="w-8 flex">
                   <Checkbox
                     id={`${todo.id}`}
-                    checked={todo.completed}
+                    checked={todo.isCompleted}
                     onCheckedChange={() => handleToggleComplete(todo)}
                     disabled={loadingStates[todo.id]}
                     className="rounded-full border-2 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                   />
+                </div>
+
+                <div className="w-3/5 flex items-center space-x-4 flex-grow">
                   {editingId === todo.id ? (
                     <Input
                       type="text"
+                      ref={inputRef}
                       value={updatedTodoText}
                       onChange={(e) => setUpdatedTodoText(e.target.value)}
-                      className="flex-grow"
+                      className="w-full"
                     />
                   ) : (
                     <label
                       htmlFor={`todo-${todo.id}`}
                       className={`text-base transition-all duration-300 ${
-                        todo.completed
+                        todo.isCompleted
                           ? "line-through text-muted-foreground"
                           : "text-foreground"
                       }`}
@@ -168,7 +185,7 @@ export default function TodosComponent() {
                     </label>
                   )}
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="w-24 flex items-center space-x-3">
                   {editingId === todo.id ? (
                     <>
                       <Button
@@ -219,7 +236,7 @@ export default function TodosComponent() {
                     </>
                   )}
                 </div>
-                <div className="text-xs text-muted-foreground pl-4">
+                <div className="w-20 text-xs text-muted-foreground pl-4">
                   {new Date(todo.createdAt).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",

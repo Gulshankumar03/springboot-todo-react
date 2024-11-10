@@ -1,18 +1,8 @@
-import axios from "axios";
+import { apiClient } from "./ApiClient";
 
-const apiUrl = "http://localhost:8080";
-const username = "gulshan";
-const password = "gillu";
-
-  const apiClient = axios.create({
-    baseURL: apiUrl,
-    auth: {
-      username: username,
-      password: password,
+export const basicAuthApi = (token:string) =>
+  apiClient.get("/api/auth/basicauth", {
+    headers: {
+      Authorization: token,
     },
   });
-
-  const HelloWorldApiService = () =>
-    apiClient.get(`/api/users/gulshan/todos`);
-
-export default HelloWorldApiService;

@@ -34,52 +34,57 @@ const buttonVariants = {
 };
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
   const authContext = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (authContext?.login(email, password)) {
-      navigate("/welcome");
-    } else {
+    try {
+      const success = await authContext?.login(username, password);
+      if (success) {
+        navigate("/welcome");
+      } else {
+        setIsError(true);
+      }
+    } catch (error) {
+      console.error("Unexpected error during login:", error);
       setIsError(true);
     }
   };
 
   return (
     <div className="flex items-center flex-col justify-center min-h-[90vh] p-4">
-      {isError && (
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="bg-red-400/20 px-10 py-3 rounded-xl m-3 text-sm text-center text-red-500">
-            Login failed! Try again.
-          </div>
-        </motion.p>
-      )}
       <Card className="w-[400px] bg-white shadow-xl overflow-hidden flex flex-col">
-        <CardHeader className="">
-          <CardTitle className="text-3xl font-bold  text-gray-800">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold text-gray-800">
             Log In
           </CardTitle>
-          <CardDescription className=" text-gray-600">
+          <CardDescription className="text-gray-600">
             Enter your credentials to access your account
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-5 py-3 flex-grow">
+            {isError && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="bg-red-400/20 px-3 py-2 rounded text-sm text-center text-red-500"
+              >
+                Login failed! Try again.
+              </motion.div>
+            )}
             <div className="space-y-0">
               <Label
-                htmlFor="email"
+                htmlFor="username"
                 className="text-sm font-medium text-gray-700"
               >
-                Email
+                Username
               </Label>
               <motion.div
                 variants={inputVariants}
@@ -88,13 +93,18 @@ export default function Login() {
               >
                 <Input
                   autoFocus
-                  id="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="username"
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                    setIsError(false); // Reset error on input change
+                  }}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  className={`w-full px-3 py-2 border ${
+                    isError ? "border-red-400" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200`}
                 />
               </motion.div>
             </div>
@@ -115,9 +125,14 @@ export default function Login() {
                   type="password"
                   placeholder="Enter your password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setIsError(false); // Reset error on input change
+                  }}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                  className={`w-full px-3 py-2 border ${
+                    isError ? "border-red-400" : "border-gray-300"
+                  } rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200`}
                 />
               </motion.div>
             </div>
@@ -131,38 +146,23 @@ export default function Login() {
               className="w-full"
             >
               <Button
-                onClick={handleSubmit}
                 type="submit"
-                className="w-full text-white font-normal py-2 px-4 rounded-md  duration-100"
+                className="w-full text-white font-normal py-2 px-4 rounded-md duration-100"
               >
                 Login
               </Button>
             </motion.div>
-            {/* <span className="text-xs m-1">or</span> */}
-            <motion.div
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              className="w-full"
-            >
-              <Button
-                type="submit"
-                variant={"outline"}
-                className="hover:bg-gray-100 mt-3 w-full font-normal py-2 px-4 rounded-md  duration-100"
-              >
+            <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap" className="w-full">
+              <Button type="submit" variant={"outline"} className="hover:bg-gray-100 mt-3 w-full font-normal py-2 px-4 rounded-md duration-100">
                 Login with Google
               </Button>
             </motion.div>
 
             <p className="text-xs mt-5 text-gray-800 self-start">
               No account?
-              <span>
-                {" "}
-                <Link to={`/signup`} className="text-blue-800 ">
-                  Sign up
-                </Link>
-                {/* <Button onClick={handleRouting} className="text-xs text-blue-950" variant={"link"} >Sign up</Button> */}
-              </span>
+              <Link to="/signup" className="text-blue-800 ml-1">
+                Sign up
+              </Link>
             </p>
           </CardFooter>
         </form>

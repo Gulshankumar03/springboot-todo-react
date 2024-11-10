@@ -1,14 +1,14 @@
 import React, { ReactNode } from "react";
 import Navbar from "./components/Navbar";
-import Signin from "./components/Login";
+// import Signin from "./components/Login";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import ErrorComponent from "./components/ErrorComponent";
 import Signup from "./components/Signup";
 import TodosComponent from "./components/TodosComponent";
-import AuthProvider, { useAuth } from "./components/security/AuthContext";
 import Welcome from "./components/Welcome";
 import { Toaster } from "./components/ui/toaster";
-// import TodoList from "./components/TodoList";
+import AuthProvider, { useAuth } from "./components/security/AuthContext";
+import Login from "./components/Login";
 
 interface AuthenticatedRouteProps {
   children: ReactNode;
@@ -28,14 +28,14 @@ const App: React.FC = () => {
   return (
     <div className="h-screen">
       <AuthProvider>
-      <Toaster />
+        <Toaster />
         <BrowserRouter>
           <Navbar />
           <div className="pt-16">
             <Routes>
-              <Route path="/" element={<Signin />} />
+              <Route path="/" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/signin" element={<Signin />} />
+              <Route path="/login" element={<Login />} />
 
               <Route
                 path="/welcome"
@@ -67,7 +67,6 @@ const App: React.FC = () => {
               <Route path="*" element={<ErrorComponent />} />
             </Routes>
           </div>
-          {/* <FooterComponent /> */}
         </BrowserRouter>
       </AuthProvider>
     </div>

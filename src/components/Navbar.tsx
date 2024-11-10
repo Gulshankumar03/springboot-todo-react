@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
             {authContext?.isAuthenticated ? (
               <Link
                 className="transform transition-transform duration-200 hover:scale-105"
-                to="/signin"
+                to="/login"
                 onClick={logout}
               >
                 <Button>
@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
 
                 <Link
                   className="transform transition-transform duration-200 hover:scale-105"
-                  to="/signin"
+                  to="/login"
                 >
                   <Button>
                     Login <LogInIcon />
