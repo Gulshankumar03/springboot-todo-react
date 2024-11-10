@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+// import AddTodoComponent from "./AddTodoComponent";
 import { toast } from "@/hooks/use-toast";
 import { Calendar, Loader2, Pencil, Save, Trash2, X } from "lucide-react";
 import useTodoApiService from "@/api/TodoApiService";
-import AddTodoComponent from "./AddTodoComponent";
-
+import AddTodoComponent from "../AddTodoComponent";
+// import AddTodoComponent from "./AddTodoComponent";
+// import AddTodoComponent from "../AddTodoComponent";
 interface Todo {
   id: number;
   todo: string;
@@ -21,7 +23,9 @@ interface TodosByDate {
 
 export default function TodosComponent() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [loadingStates, setLoadingStates] = useState<{ [key: number]: boolean }>({});
+  const [loadingStates, setLoadingStates] = useState<{
+    [key: number]: boolean;
+  }>({});
   const [editingId, setEditingId] = useState<number | null>(null);
   const [updatedTodoText, setUpdatedTodoText] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,16 +34,13 @@ export default function TodosComponent() {
 
   useEffect(() => {
     refreshTodos();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   const refreshTodos = async () => {
     try {
       const response = await todoApiService.getTodos();
-      const sortedTodos = response.sort((a: Todo, b: Todo) => {
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      });
-      setTodos(sortedTodos);
+      setTodos(response.reverse());
       setLoadingStates({});
       setEditingId(null);
     } catch (error) {
@@ -57,7 +58,7 @@ export default function TodosComponent() {
     try {
       await todoApiService.deleteTodo(id);
       toast({ title: "Todo deleted successfully" });
-      refreshTodos();
+      refreshTodos(); // Refresh todos after deletion
     } catch (error) {
       console.error("Error deleting todo:", error);
       toast({
@@ -66,13 +67,14 @@ export default function TodosComponent() {
         description: "There was a problem with your request.",
       });
     } finally {
-      setLoadingStates((prev) => ({ ...prev, [id]: false }));
+      setLoadingStates((prev) => ({ ...prev, [id]: false })); // Reset loading state
     }
   };
 
   const handleUpdateClick = (todo: Todo) => {
     setEditingId(todo.id);
     setUpdatedTodoText(todo.todo);
+    // Focus and select the text in the input field
     setTimeout(() => {
       inputRef.current?.focus();
       inputRef.current?.select();
@@ -93,7 +95,7 @@ export default function TodosComponent() {
         description: "There was a problem with your request.",
       });
     } finally {
-      setLoadingStates((prev) => ({ ...prev, [id]: false }));
+      setLoadingStates((prev) => ({ ...prev, [id]: false })); // Reset loading state
     }
   };
 
@@ -117,17 +119,18 @@ export default function TodosComponent() {
         description: "There was a problem with your request.",
       });
     } finally {
-      setLoadingStates((prev) => ({ ...prev, [todo.id]: false }));
+      setLoadingStates((prev) => ({ ...prev, [todo.id]: false })); // Reset loading state
     }
   };
 
+  // Group todos by their creation date
   const groupedTodos = todos.reduce((acc: TodosByDate[], todo) => {
-    const date = new Date(todo.createdAt).toISOString().split("T")[0];
+    const date = new Date(todo.createdAt).toISOString().split("T")[0]; // YYYY-MM-DD
     const existingGroup = acc.find((group) => group.date === date);
     if (existingGroup) {
-      existingGroup.todos.unshift(todo);
+      existingGroup.todos.push(todo);
     } else {
-      acc.unshift({ date, todos: [todo] });
+      acc.push({ date, todos: [todo] });
     }
     return acc;
   }, []);
@@ -145,18 +148,29 @@ export default function TodosComponent() {
     } else {
       return date.toLocaleDateString("en-US", {
         weekday: "long",
-        month: "short",
+        month: "long",
         day: "numeric",
       });
     }
   };
 
+  // const groupedTodos = todos.reduce((acc: TodosByDate[], todo) => {
+  //   const date = new Date(todo.createdAt).toISOString().split("T")[0];
+  //   const existingGroup = acc.find((group) => group.date === date);
+  //   if (existingGroup) {
+  //     existingGroup.todos.unshift(todo);
+  //   } else {
+  //     acc.unshift({ date, todos: [todo] });
+  //   }
+  //   return acc;
+  // }, []);
+
   return (
     <div className="min-h-[93vh] bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <div className="text-center mb-12">
-          <h1 className="text-6xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
-            All Tasks
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Your Todos
           </h1>
           <p className="text-gray-500 mt-2">Stay organized, stay productive</p>
         </div>
@@ -173,11 +187,17 @@ export default function TodosComponent() {
                 {formatDate(date)}
               </h2>
             </div>
+            {/* <div className=" rounded-lg shadow-sm overflow-hidden"> */}
             <div className="space-y-3">
               {todos.map((todo: Todo) => (
+                // <div
+                //   key={todo.id}
+                //   className="flex items-center justify-between p-5 border-b  hover:bg-yellow-50 hover:shadow-sm border-gray-200"
+                // >
+                //   <div className="w-8 flex">
                 <div
                   key={todo.id}
-                  className={`bg-white rounded-lg shadow-sm`}
+                  className={` bg-white rounded-lg shadow-sm`}
                 >
                   <div className="flex items-center p-4">
                     <div className="flex w-10">
@@ -188,7 +208,7 @@ export default function TodosComponent() {
                         disabled={loadingStates[todo.id]}
                         className="w-5 h-5 rounded-full border-2 border-indigo-500 data-[state=checked]:bg-indigo-500 
                         data-[state=checked]:border-blue-500 transition-colors duration-100"
-                      />
+                    />
                     </div>
 
                     <div className="w-3/5 flex items-center space-x-4 mr-5 flex-grow">
@@ -253,7 +273,7 @@ export default function TodosComponent() {
                             variant="ghost"
                             onClick={() => handleDeleteTodo(todo.id)}
                             disabled={loadingStates[todo.id]}
-                            className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                            className="text-muted-foreground hover:text-destructive hover:bg-destructive/20"
                           >
                             {loadingStates[todo.id] ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
@@ -264,11 +284,10 @@ export default function TodosComponent() {
                         </>
                       )}
                     </div>
-                    {/* <div className="text-right w-24 bg-red-500 text-sm text-muted-foreground"> */}
                     <div className="w-20 text-xs font-bold text-muted-foreground pl-4">
                       {new Date(todo.createdAt).toLocaleTimeString([], {
-                        hour: "numeric",
-                        minute: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
                       })}
                     </div>
                   </div>

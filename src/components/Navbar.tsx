@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
           <div className="flex gap-2">
             {authContext?.isAuthenticated ? (
               <>
-              <span className="flex items-center px-2 rounded-md bg-yellow-100 shadow-sm">{authContext.username}</span>
+              <span className="flex items-center px-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent ">{authContext.username}</span>
                 <Link
                   className="transform transition-transform duration-200 hover:scale-105"
                   to="/login"
