@@ -71,7 +71,7 @@ const AddTodoComponent: React.FC<AddTodoComponentProps> = ({
         className="border border-gray-400 flex-grow"
         autoFocus
         type="text"
-        placeholder="Add your task"
+        placeholder="Add new task"
         value={todoText}
         onChange={(e) => setTodoText(e.target.value)}
         disabled={isLoading}

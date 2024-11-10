@@ -59,24 +59,25 @@ const Navbar: React.FC = () => {
           </div>
           <div className="flex gap-2">
             {authContext?.isAuthenticated ? (
-              <Link
-                className="transform transition-transform duration-200 hover:scale-105"
-                to="/login"
-                onClick={logout}
-              >
-                <Button>
-                  Logout <LogOutIcon />
-                </Button>
-              </Link>
+              <>
+              <span className="flex items-center px-2 rounded-md bg-yellow-100 shadow-sm">{authContext.username}</span>
+                <Link
+                  className="transform transition-transform duration-200 hover:scale-105"
+                  to="/login"
+                  onClick={logout}
+                >
+                  <Button>
+                    Logout <LogOutIcon />
+                  </Button>
+                </Link>
+              </>
             ) : (
               <>
                 <Link
                   className="transform transition-transform duration-200 hover:scale-105"
                   to="/signup"
                 >
-                  <Button variant={"outline"}>
-                    Sign up 
-                  </Button>
+                  <Button variant={"outline"}>Sign up</Button>
                 </Link>
 
                 <Link

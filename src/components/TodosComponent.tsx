@@ -147,11 +147,11 @@ export default function TodosComponent() {
           <h2 className="text-xl font-semibold mb-2">
             {new Date(date).toLocaleDateString()}
           </h2>
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className=" rounded-lg shadow-sm overflow-hidden">
             {todos.map((todo) => (
               <div
                 key={todo.id}
-                className="flex items-center justify-between p-5 border-b border-gray-200"
+                className="flex items-center justify-between p-5 border-b  hover:bg-yellow-50 hover:shadow-sm border-gray-200"
               >
                 <div className="w-8 flex">
                   <Checkbox
@@ -163,7 +163,7 @@ export default function TodosComponent() {
                   />
                 </div>
 
-                <div className="w-3/5 flex items-center space-x-4 flex-grow">
+                <div className="w-3/5 flex items-center space-x-4 mr-5 flex-grow">
                   {editingId === todo.id ? (
                     <Input
                       type="text"
