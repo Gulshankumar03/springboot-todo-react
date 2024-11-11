@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 import { apiClient } from "@/api/ApiClient";
-import { basicAuthApi } from "@/api/HelloWorldApiService";
+import { basicAuthApi } from "@/api/AuthApiService";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -14,8 +14,6 @@ interface AuthContextType {
   signup: (username: string, password: string) => Promise<boolean>;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
-  // makeAuthenticatedRequest: (url: string) => Promise<unknown>;
-  // sessionId: string | null;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -34,7 +32,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  // const [sessionId, setSessionId] = useState<string | null>(null);
 
   const signup = async (
     username: string,
@@ -85,8 +82,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsAuthenticated(false);
     setUsername(null);
     setToken(null);
-    // setSessionId(null);
-    // Cookies.remove("sessionId");
   };
 
   return (
@@ -99,8 +94,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         signup,
         login,
         logout,
-        // makeAuthenticatedRequest,
-        // sessionId,
       }}
     >
       {children}
@@ -109,43 +102,3 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 };
 
 export default AuthProvider;
-
-// const login = async (username: string, password: string): Promise<boolean> => {
-//   try {
-//     const response = await axiosInstance.post(
-//       "/auth/basic",
-//       { username, password },
-//       { withCredentials: true }
-//     );
-//     // Update authentication state and session info
-//     setIsAuthenticated(true);
-//     setUsername(response.data.username || username);
-//     return true;
-//   } catch (error) {
-//     console.error("Login failed", error);
-//     setIsAuthenticated(false);
-//     setUsername(null);
-//     // setSessionId(null);
-//     return false;
-//   }
-// };
-
-// const makeAuthenticatedRequest = async (url: string): Promise<unknown> => {
-//   try {
-//     const response = await apiClient.get(url, { withCredentials: true });
-//     return response.data;
-//   } catch (error) {
-//     // TypeScript adjustment: Ensure error has a response property
-//     if (
-//       axios.isAxiosError(error) &&
-//       error.response &&
-//       error.response.status === 401
-//     ) {
-//       // Handle unauthorized error by logging out
-//       logout();
-//     } else {
-//       console.error("Authenticated request failed", error);
-//     }
-//     throw error;
-//   }
-// };
