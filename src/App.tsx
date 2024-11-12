@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import Navbar from "./components/Navbar";
 // import Signin from "./components/Login";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import ErrorComponent from "./components/ErrorComponent";
+// import ErrorComponent from "./components/ErrorComponent";
 import Signup from "./components/Signup";
 import TodosComponent from "./components/TodosComponent";
 import Welcome from "./components/Welcome";
@@ -64,7 +64,7 @@ const App: React.FC = () => {
                 }
               />
 
-              <Route path="*" element={<ErrorComponent />} />
+              {/* <Route path="*" element={<ErrorComponent />} /> */}
             </Routes>
           </div>
         </BrowserRouter>

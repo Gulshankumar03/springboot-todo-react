@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 import { apiClient } from "@/api/ApiClient";
-import { basicAuthApi } from "@/api/AuthApiService";
+import { jwtAuthApi } from "@/api/AuthApiService";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -49,20 +49,52 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // const login = async (
+  //   username: string,
+  //   password: string
+  // ): Promise<boolean> => {
+  //   const baToken = "Basic " + window.btoa(username + ":" + password);
+  //   try {
+  //     const response = await basicAuthApi(baToken);
+  //     if (response.status == 200) {
+  //       setIsAuthenticated(true);
+  //       setUsername(username);
+  //       setToken(baToken);
+
+  //       apiClient.interceptors.request.use((config) => {
+  //         config.headers.Authorization = baToken;
+  //         return config;
+  //       });
+
+  //       return true;
+  //     } else {
+  //       logout();
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     logout();
+  //     return false;
+  //     console.log(error);
+  //   }
+  // };
+
   const login = async (
     username: string,
     password: string
   ): Promise<boolean> => {
-    const baToken = "Basic " + window.btoa(username + ":" + password);
     try {
-      const response = await basicAuthApi(baToken);
+      const response = await jwtAuthApi(username, password);
+
       if (response.status == 200) {
+
+        const jwtToken = "Bearer " + response.data.token;
+        
         setIsAuthenticated(true);
         setUsername(username);
-        setToken(baToken);
+        setToken(jwtToken);
 
         apiClient.interceptors.request.use((config) => {
-          config.headers.Authorization = baToken;
+          config.headers.Authorization = jwtToken;
           return config;
         });
 
