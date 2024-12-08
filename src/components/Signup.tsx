@@ -316,11 +316,11 @@ export default function Signup() {
                 Sign up
               </Button>
             </motion.div>
-            <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap" className="w-full">
+            {/* <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap" className="w-full">
               <Button type="submit" variant={"outline"} className="hover:bg-gray-100 mt-3 w-full font-normal py-2 px-4 rounded-md duration-100">
                 Sign up with Google
               </Button>
-            </motion.div>
+            </motion.div> */}
 
             <p className="text-xs mt-5 text-gray-800 self-start">
               Already have an account?

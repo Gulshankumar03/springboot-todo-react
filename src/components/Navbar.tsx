@@ -26,13 +26,13 @@ const Navbar: React.FC = () => {
               <img src={logo} alt="Logo" className="h-6 w-6 mr-2" />
             </Link>
             <Link to="/" className={`text-[28px] font-bold font-nunito `}>
-              Todo
+              Task
             </Link>
             <Link
               to="/"
               className={`pr-4 text-[28px] font-extrabold font-nunito text-orange-500`}
             >
-              List
+              Mate
             </Link>
             {authContext?.isAuthenticated && (
               <>
