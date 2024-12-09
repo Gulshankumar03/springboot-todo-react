@@ -14,6 +14,10 @@ const Welcome = () => {
         console.log(error);
       });
   }, []);
+  let displayText = "Welcome to TaskMate! 😊";
+  if (data) {
+    displayText = data;
+  }
   return (
     <div className="flex flex-col items-center min-h-[93vh] bg-gradient-to-br from-blue-50 to-purple-50 text-gray-800">
       {/* Hero Section */}
@@ -21,7 +25,7 @@ const Welcome = () => {
         <h1 className="text-4xl font-bold mb-6 text-gray-900">
           {/* Welcome to Task */}
           {/* <span className="font-nunito text-orange-500">Mate!</span> */}
-          {data}
+          {displayText}
         </h1>
         <p className="text-lg mb-8 text-gray-600">
           Streamline your tasks, prioritize effectively, and achieve your goals
