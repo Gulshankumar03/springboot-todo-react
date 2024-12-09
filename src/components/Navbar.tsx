@@ -39,14 +39,6 @@ const Navbar: React.FC = () => {
                 <div className="flex gap-2">
                   <Link
                     className={`hover:bg-orange-200/70 px-3 py-2 rounded-md ${
-                      isActive("/welcome") ? " bg-gray-200" : ""
-                    }`}
-                    to="/welcome"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    className={`hover:bg-orange-200/70 px-3 py-2 rounded-md ${
                       isActive("/todos") ? "bg-gray-200" : ""
                     }`}
                     to="/todos"
@@ -60,7 +52,9 @@ const Navbar: React.FC = () => {
           <div className="flex gap-2">
             {authContext?.isAuthenticated ? (
               <>
-              <span className="flex items-center px-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent ">{authContext.username}</span>
+                <span className="flex items-center px-2 rounded-md bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent ">
+                  {authContext.username}
+                </span>
                 <Link
                   className="transform transition-transform duration-200 hover:scale-105"
                   to="/login"

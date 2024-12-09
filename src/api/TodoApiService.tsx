@@ -16,6 +16,19 @@ const useTodoApiService = () => {
   }
 
   return {
+
+    getRootResponse: async (): Promise<string> => {
+      try {
+        const response = await apiClient.get<string>(
+          `/`
+        );
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching todos:", error);
+        throw error;
+      }
+    },
+
     getTodos: async (): Promise<Todo[]> => {
       try {
         const response = await apiClient.get<Todo[]>(

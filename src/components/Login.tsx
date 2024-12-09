@@ -46,7 +46,7 @@ export default function Login() {
     try {
       const success = await authContext?.login(username, password);
       if (success) {
-        navigate("/welcome");
+        navigate("/todos");
       } else {
         setIsError(true);
       }

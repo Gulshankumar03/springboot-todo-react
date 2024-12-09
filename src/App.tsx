@@ -1,14 +1,12 @@
 import React, { ReactNode } from "react";
 import Navbar from "./components/Navbar";
-// import Signin from "./components/Login";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-// import ErrorComponent from "./components/ErrorComponent";
 import Signup from "./components/Signup";
 import TodosComponent from "./components/TodosComponent";
-import Welcome from "./components/Welcome";
 import { Toaster } from "./components/ui/toaster";
 import AuthProvider, { useAuth } from "./components/security/AuthContext";
 import Login from "./components/Login";
+import Welcome from "./components/Welcome";
 
 interface AuthenticatedRouteProps {
   children: ReactNode;
@@ -21,7 +19,7 @@ function AuthenticatedRoute({ children }: AuthenticatedRouteProps) {
     return children;
   }
 
-  return <Navigate to={"/"} />; //If user is not authenticated and tries to visit the protected route then redirect (navigate) to "/"
+  return <Navigate to={"/login"} />; //If user is not authenticated and tries to visit the protected route then redirect (navigate) to "/"
 }
 
 const App: React.FC = () => {
@@ -33,18 +31,18 @@ const App: React.FC = () => {
           <Navbar />
           <div className="pt-16">
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<Welcome />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
 
-              <Route
+              {/* <Route
                 path="/welcome"
                 element={
                   <AuthenticatedRoute>
                     <Welcome />
                   </AuthenticatedRoute>
                 }
-              />
+              /> */}
 
               {/* <Route
                 path="/welcome"

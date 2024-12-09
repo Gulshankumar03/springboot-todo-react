@@ -13,10 +13,10 @@ const Welcome = () => {
           with a simple and intuitive todo management experience.
         </p>
         <Link
-          to="/todos"
+          to="/login"
           className="inline-block px-6 py-3 text-lg font-semibold text-white bg-blue-600 rounded-md shadow hover:bg-blue-700 transition-colors"
         >
-          Manage Todos
+          Get started
         </Link>
       </div>
     </div>
