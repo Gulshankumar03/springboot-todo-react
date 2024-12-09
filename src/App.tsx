@@ -34,35 +34,7 @@ const App: React.FC = () => {
               <Route path="/" element={<Welcome />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
-
-              {/* <Route
-                path="/welcome"
-                element={
-                  <AuthenticatedRoute>
-                    <Welcome />
-                  </AuthenticatedRoute>
-                }
-              /> */}
-
-              {/* <Route
-                path="/welcome"
-                element={
-                  <AuthenticatedRoute>
-                    <TodoList />
-                  </AuthenticatedRoute>
-                } 
-              />*/}
-
-              <Route
-                path="/todos"
-                element={
-                  <AuthenticatedRoute>
-                    <TodosComponent />
-                  </AuthenticatedRoute>
-                }
-              />
-
-              {/* <Route path="*" element={<ErrorComponent />} /> */}
+              <Route path="/todos" element={<AuthenticatedRoute> <TodosComponent /> </AuthenticatedRoute>}/>
             </Routes>
           </div>
         </BrowserRouter>
