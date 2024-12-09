@@ -1,12 +1,27 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Welcome = () => {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <div className="flex flex-col items-center min-h-[93vh] bg-gradient-to-br from-blue-50 to-purple-50 text-gray-800">
       {/* Hero Section */}
       <div className="text-center max-w-3xl p-16 mt-48  bg-white rounded-lg shadow-lg border border-gray-200">
         <h1 className="text-4xl font-bold mb-6 text-gray-900">
-          Welcome to Task<span className="font-nunito text-orange-500">Mate!</span>
+          {/* Welcome to Task */}
+          {/* <span className="font-nunito text-orange-500">Mate!</span> */}
+          {data}
         </h1>
         <p className="text-lg mb-8 text-gray-600">
           Streamline your tasks, prioritize effectively, and achieve your goals
