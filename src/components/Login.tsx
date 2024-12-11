@@ -56,7 +56,6 @@ export default function Login() {
     }
   };
 
-
   return (
     <div className="flex items-center flex-col justify-center min-h-[90vh] p-4">
       <Card className="w-[400px] bg-white shadow-xl overflow-hidden flex flex-col">
@@ -153,13 +152,6 @@ export default function Login() {
                 Login
               </Button>
             </motion.div>
-
-            {/* <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap" className="w-full">
-              <Button type="submit" onSubmit={handleGoogleSubmit} variant={"outline"} className="hover:bg-gray-100 mt-3 w-full font-normal py-2 px-4 rounded-md duration-100">
-                Login with Google
-              </Button>
-            </motion.div> */}
-
             <p className="text-xs mt-5 text-gray-800 self-start">
               No account?
               <Link to="/signup" className="text-blue-800 ml-1">

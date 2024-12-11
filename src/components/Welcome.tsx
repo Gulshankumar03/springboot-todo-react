@@ -6,7 +6,8 @@ const Welcome = () => {
   const [data, setData] = useState(null);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/")
+      // .get("http://localhost:5000")
+      .get("http://task-mate-env-1.eba-66iepabq.ap-south-1.elasticbeanstalk.com")
       .then((response) => {
         setData(response.data);
       })
@@ -23,8 +24,6 @@ const Welcome = () => {
       {/* Hero Section */}
       <div className="text-center max-w-3xl p-16 mt-48  bg-white rounded-lg shadow-lg border border-gray-200">
         <h1 className="text-4xl font-bold mb-6 text-gray-900">
-          {/* Welcome to Task */}
-          {/* <span className="font-nunito text-orange-500">Mate!</span> */}
           {displayText}
         </h1>
         <p className="text-lg mb-8 text-gray-600">
